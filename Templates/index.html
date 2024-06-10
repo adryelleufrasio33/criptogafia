@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criptografia de Imagens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <h1>Criptografia de Imagens</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="file">Escolha uma imagem:</label>
+        <input type="file" id="file" name="file">
+        <button type="submit">Criptografar</button>
+    </form>
+
+    {% if encrypted_image and key_file %}
+    <h2>Imagem Criptografada</h2>
+    <a href="{{ url_for('download_file', filename=encrypted_image) }}">Baixar Imagem Criptografada</a><br>
+    <a href="{{ url_for('download_file', filename=key_file) }}">Baixar Chave e IV</a>
+    {% endif %}
+
+    <h2>Descriptografar Imagem</h2>
+    <form action="/decrypt" method="post" enctype="multipart/form-data">
+        <label for="encrypted_file">Escolha a imagem criptografada:</label>
+        <input type="file" id="encrypted_file" name="encrypted_file">
+        <label for="key_file">Escolha o arquivo de chave:</label>
+        <input type="file" id="key_file" name="key_file">
+        <button type="submit">Descriptografar</button>
+    </form>
+
+    {% if decrypted_image %}
+    <h3>Imagem Descriptografada</h3>
+    <img src="{{ url_for('static', filename=decrypted_image) }}" alt="Imagem Descriptografada">
+    {% endif %}
+
+</body>
+</html>
